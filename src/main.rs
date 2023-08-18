@@ -1,8 +1,13 @@
-struct Cli {
+use clap::Parser;
+
+#[derive(Parser)]
+struct Args {
     pattern: String,
     path: std::path::PathBuf,
 }
 
 fn main() {
-    println!("Hello, world!");
+    let args = Args::parse();
+
+    println!("pattern = {}", args.pattern);
 }
