@@ -1,6 +1,7 @@
 // https://rust-cli.github.io/book/tutorial/index.html
 use anyhow::{Context, Result};
 use clap::Parser;
+use log::{trace, info};
 use std::path::PathBuf;
 
 #[derive(Parser)]
@@ -11,16 +12,21 @@ struct Args {
 
 // 実行例: argo run -- version Cargo.lock
 fn main() -> Result<()> {
+    env_logger::init();
+
     let args = Args::parse();
 
-    let pathbuf = PathBuf::from(&args.path);
+    info!("pattern: \"{}\"", args.pattern);
+    info!("path: \"{}\"", args.pattern);
 
-    println!("pattern: \"{}\"", args.pattern);
+    let pathbuf = PathBuf::from(&args.path);
 
     let content = std::fs::read_to_string(&pathbuf)
         .with_context(|| format!("could not read file `{}`", args.path))?;
 
     for line in content.lines() {
+        trace!("line: {}", line);
+
         if line.contains(&args.pattern) {
             println!("{}", line);
         }
