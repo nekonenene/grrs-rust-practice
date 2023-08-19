@@ -2,7 +2,7 @@ name: Generate Release Page
 on:
   push:
     branches:
-      - main
+      - release
 jobs:
   release-it:
     name: release-it
