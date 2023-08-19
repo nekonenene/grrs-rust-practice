@@ -1,5 +1,5 @@
 // https://rust-cli.github.io/book/tutorial/index.html
-use anyhow::{Context, Result};
+use anyhow::{Context, Result, Ok};
 use clap::Parser;
 use log::{trace, info};
 use std::path::PathBuf;
@@ -24,19 +24,21 @@ fn main() -> Result<()> {
     let content = std::fs::read_to_string(&pathbuf)
         .with_context(|| format!("could not read file `{}`", args.path))?;
 
-    find_matches(&content, &args.pattern);
+    find_matches(&content, &args.pattern, &mut std::io::stdout())?;
 
     Ok(())
 }
 
-fn find_matches(content: &str, pattern: &str) {
+fn find_matches(content: &str, pattern: &str, mut writer: impl std::io::Write) -> Result<()> {
     for line in content.lines() {
         trace!("line: {}", line);
 
         if line.contains(pattern) {
-            println!("{}", line);
+            writeln!(writer, "{}", line)?;
         }
     }
+
+    Ok(())
 }
 
 #[test]
