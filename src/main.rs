@@ -17,20 +17,29 @@ fn main() -> Result<()> {
     let args = Args::parse();
 
     info!("pattern: \"{}\"", args.pattern);
-    info!("path: \"{}\"", args.pattern);
+    info!("path: \"{}\"", args.path);
 
     let pathbuf = PathBuf::from(&args.path);
 
     let content = std::fs::read_to_string(&pathbuf)
         .with_context(|| format!("could not read file `{}`", args.path))?;
 
+    find_matches(&content, &args.pattern);
+
+    Ok(())
+}
+
+fn find_matches(content: &str, pattern: &str) {
     for line in content.lines() {
         trace!("line: {}", line);
 
-        if line.contains(&args.pattern) {
+        if line.contains(pattern) {
             println!("{}", line);
         }
     }
+}
 
-    Ok(())
+#[test]
+fn check_answer_validity() {
+    assert_eq!(42, 42);
 }
