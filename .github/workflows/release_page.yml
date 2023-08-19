@@ -1,0 +1,31 @@
+name: Generate Release Page
+on:
+  push:
+    branches:
+      - main
+jobs:
+  release-it:
+    name: release-it
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all commits and tags (Ref: https://github.com/actions/checkout#usage)
+      - name: Install cargo for generating binary file
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Install Node.js for release-it
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Set commiter for release-it
+        run: |
+          git config --global user.name release-it
+          git config --global user.email ci@example.com
+      - name: Install release-it
+        run: npm install -g release-it
+      - name: Run release-it
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: release-it --ci --increment patch

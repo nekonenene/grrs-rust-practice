@@ -1,0 +1,13 @@
+hooks:
+  before:release: cargo build --release --all-features
+git:
+  commit: false
+  tag: true
+  push: true
+  requireCleanWorkingDir: false
+github:
+  release: true
+  assets:
+    - target/release/grrs
+npm:
+  publish: false
