@@ -10,7 +10,7 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    println!("pattern = {}", args.pattern);
+    println!("pattern: \"{}\"", args.pattern);
 
     // メモ： expect でエラーを出力する方法はあまりきれいじゃないらしい
     // https://rust-cli.github.io/book/tutorial/impl-draft.html
