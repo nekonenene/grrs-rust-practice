@@ -1,24 +1,23 @@
 // https://rust-cli.github.io/book/tutorial/index.html
+use anyhow::{Context, Result};
 use clap::Parser;
 
 #[derive(Parser)]
 struct Args {
     pattern: String,
-    path: std::path::PathBuf,
+    path: String,
 }
 
 // 実行例: argo run -- version Cargo.lock
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+fn main() -> Result<()> {
     let args = Args::parse();
+
+    let pathbuf = std::path::PathBuf::from(&args.path);
 
     println!("pattern: \"{}\"", args.pattern);
 
-    let result = std::fs::read_to_string(&args.path);
-
-    let content = match result {
-        Ok(content) => { content },
-        Err(error) => { return Err(error.into()); },
-    };
+    let content = std::fs::read_to_string(&pathbuf)
+        .with_context(|| format!("could not read file `{}`", args.path))?;
 
     for line in content.lines() {
         if line.contains(&args.pattern) {
