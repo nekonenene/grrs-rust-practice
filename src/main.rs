@@ -1,6 +1,7 @@
 // https://rust-cli.github.io/book/tutorial/index.html
 use anyhow::{Context, Result};
 use clap::Parser;
+use std::path::PathBuf;
 
 #[derive(Parser)]
 struct Args {
@@ -12,7 +13,7 @@ struct Args {
 fn main() -> Result<()> {
     let args = Args::parse();
 
-    let pathbuf = std::path::PathBuf::from(&args.path);
+    let pathbuf = PathBuf::from(&args.path);
 
     println!("pattern: \"{}\"", args.pattern);
 
