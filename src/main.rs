@@ -1,4 +1,6 @@
 // https://rust-cli.github.io/book/tutorial/index.html
+#![allow(unused_must_use)]
+
 use anyhow::{Context, Result, Ok};
 use clap::Parser;
 use log::{trace, info};
@@ -24,24 +26,24 @@ fn main() -> Result<()> {
     let content = std::fs::read_to_string(&pathbuf)
         .with_context(|| format!("could not read file `{}`", args.path))?;
 
-    find_matches(&content, &args.pattern, &mut std::io::stdout())?;
+    find_matches(&content, &args.pattern, &mut std::io::stdout());
 
     Ok(())
 }
 
-fn find_matches(content: &str, pattern: &str, mut writer: impl std::io::Write) -> Result<()> {
+fn find_matches(content: &str, pattern: &str, mut writer: impl std::io::Write) {
     for line in content.lines() {
         trace!("line: {}", line);
 
         if line.contains(pattern) {
-            writeln!(writer, "{}", line)?;
+            writeln!(writer, "{}", line);
         }
     }
-
-    Ok(())
 }
 
 #[test]
-fn check_answer_validity() {
-    assert_eq!(42, 42);
+fn find_a_match() {
+    let mut result = Vec::new();
+    find_matches("lorem ipsum\ndolor sit amet", "lorem", &mut result);
+    assert_eq!(result, b"lorem ipsum\n");
 }
