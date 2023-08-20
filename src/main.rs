@@ -6,7 +6,9 @@ use std::path::PathBuf;
 
 #[derive(Parser)]
 struct Args {
+    #[arg(required = true, index = 1, help = "Find if each line contains this string")]
     pattern: String,
+    #[arg(required = true, index = 2, help = "Text file path")]
     path: String,
 }
 
