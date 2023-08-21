@@ -24,7 +24,7 @@ fn main() -> Result<()> {
     let pathbuf = PathBuf::from(&args.path);
 
     let content = std::fs::read_to_string(&pathbuf)
-        .with_context(|| format!("could not read file `{}`", args.path))?;
+        .with_context(|| format!("could not read file `{}`", args.path))?; // with_context(|| format!...) は JavaScript 的に書くと with_context(() => { format!... }) のこと
 
     grrs::find_matches(&content, &args.pattern, &mut std::io::stdout());
 
